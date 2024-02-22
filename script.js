@@ -1,4 +1,3 @@
-require('dotenv').config();
 gapi.load('client', initClient);
 
 function initClient() {
