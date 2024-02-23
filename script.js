@@ -13,7 +13,8 @@ function initClient() {
 function getDataFromSheet() {
     gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: '1HJzKapn438dVT3vws2Ea7zG9FMmoKv8yE3GbQYvS6GU',
-        range: 'Nike Lebron, Jordan',
+        // range: 'Nike Lebron, Jordan',
+        range: 'Adidas Yeezy 700',
     }).then(function(response) {
         let values = response.result.values;
         console.log('Data from Google Sheet:', values);
@@ -22,3 +23,4 @@ function getDataFromSheet() {
     });
 
 }
+
