@@ -21,8 +21,8 @@ function initClient() {
 
 function getDataFromSheet() {
     gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: spreadsheetId,
-        range: range,
+        spreadsheetId,
+        range,
     }).then((response) => {
         const values = response.result.values;
         console.log('Data from Google Sheet:', values);
