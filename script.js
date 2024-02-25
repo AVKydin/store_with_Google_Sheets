@@ -34,7 +34,7 @@ function getDataFromSheet() {
 
 function displayData(data) {
     const list = document.getElementById('data-list');
-    list.innerHTML = ''; // Очистити існуючі пункти списку
+    list.innerHTML = '';
 
     data.forEach((row) => {
         const listItem = document.createElement('li');
