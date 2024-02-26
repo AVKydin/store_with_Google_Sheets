@@ -1,6 +1,7 @@
 
 const spreadsheetId = '1HJzKapn438dVT3vws2Ea7zG9FMmoKv8yE3GbQYvS6GU';
 const range = 'Nike Lebron, Jordan';
+const rangeTwo = 'Adidas Yeezy 700';
 const apiKey = 'AIzaSyDtZJ2OspEUtqkCoQvZ5nIrm256zvMYs5I';
 
 gapi.load('client', function() {
