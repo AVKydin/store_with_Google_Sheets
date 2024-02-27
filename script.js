@@ -1,6 +1,6 @@
 
-const spreadsheetId = '1HJzKapn438dVT3vws2Ea7zG9FMmoKv8yE3GbQYvS6GU';
-const range = 'Nike Lebron, Jordan';
+const spreadsheetId = '1c6wl8ebc0RC42ItUyW6829hinHZxlKI1qMOfT2tMLXs';
+const range = 'Fruits';
 const rangeTwo = 'Adidas Yeezy 700';
 const apiKey = 'AIzaSyDtZJ2OspEUtqkCoQvZ5nIrm256zvMYs5I';
 
