@@ -27,6 +27,9 @@ function getDataFromSheet() {
     }).then((response) => {
         const values = response.result.values;
         console.log('Data from Google Sheet:', values);
+
+
+
         displayData(values);
     }).catch((error) => {
         console.error('Error fetching data:', error.result.error.message);
