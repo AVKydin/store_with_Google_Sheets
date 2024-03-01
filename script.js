@@ -41,10 +41,16 @@ function getDataFromSheet() {
 function displayData(data) {
     const list = document.getElementById('data-list');
     list.innerHTML = '';
+    const restOfData = data.slice(1);
 
-    data.forEach((row) => {
-        const listItem = document.createElement('li');
-        listItem.textContent = row.join(', ');
-        list.appendChild(listItem);
+    restOfData.forEach((row) => {
+            const listItem = document.createElement('li');
+            const image = document.createElement('img');
+            listItem.textContent = row.join(', ');
+            image.src = row[4]
+            image.alt = row[3]
+            image.style.width = '100px'
+            list.appendChild(listItem);
+            list.appendChild(image);
     });
 }
