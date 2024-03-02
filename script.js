@@ -34,23 +34,14 @@ function getDataFromSheet() {
     });
 }
 
+const list = document.querySelector('.shop-field');
+
 function displayData(data) {
-    const list = document.getElementById('data-list');
     list.innerHTML = '';
     const restOfData = dataHelper(data);
 
-
-
     restOfData.forEach((row) => {
-            const listItem = document.createElement('li');
-            const image = document.createElement('img');
-            // listItem.textContent = row.join(', ');
-        console.log(row)
-            image.src = row.image
-            image.alt = row.name
-            image.style.width = '100px'
-            list.appendChild(listItem);
-            list.appendChild(image);
+        card(row);
     });
 }
 
@@ -65,4 +56,20 @@ function dataHelper(data){
         return obj;
     });
     return arrayOfObjects;
+}
+
+function card(row){
+    console.log(row)
+    const card = document.createElement('div');
+    const titleCard = document.createElement('h5');
+    const image = document.createElement('img');
+    const p = document.createElement('p');
+    card.classList.add('col-lg-3', 'col-md-3', 'col-sm-3', 'text-center');
+    titleCard.innerHTML = row.name;
+    image.src = row.image;
+    image.alt = row.name;
+    image.style.width = '100px';
+    p.innerHTML = row.cost + ' грн/' + row.kg;
+    card.append(titleCard, image, p)
+    list.appendChild(card);
 }
