@@ -4,6 +4,9 @@ const range = 'Fruits';
 const rangeTwo = 'Adidas Yeezy 700';
 const apiKey = 'AIzaSyDtZJ2OspEUtqkCoQvZ5nIrm256zvMYs5I';
 
+const list = document.querySelector('.shop-field');
+const title = document.querySelector('h1');
+
 gapi.load('client', function() {
     initClient();
 });
@@ -34,8 +37,8 @@ function getDataFromSheet() {
     });
 }
 
-const list = document.querySelector('.shop-field');
 
+title.innerHTML = range;
 function displayData(data) {
     list.innerHTML = '';
     const restOfData = dataHelper(data);
