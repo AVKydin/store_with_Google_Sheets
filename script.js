@@ -26,11 +26,7 @@ function getDataFromSheet() {
         range,
     }).then((response) => {
         const values = response.result.values;
-        console.log('Data from Google Sheet:', values);
-
-
-
-
+        // console.log('Data from Google Sheet:', values);
 
         displayData(values);
     }).catch((error) => {
@@ -41,16 +37,32 @@ function getDataFromSheet() {
 function displayData(data) {
     const list = document.getElementById('data-list');
     list.innerHTML = '';
-    const restOfData = data.slice(1);
+    const restOfData = dataHelper(data);
+
+
 
     restOfData.forEach((row) => {
             const listItem = document.createElement('li');
             const image = document.createElement('img');
-            listItem.textContent = row.join(', ');
-            image.src = row[4]
-            image.alt = row[3]
+            // listItem.textContent = row.join(', ');
+        console.log(row)
+            image.src = row.image
+            image.alt = row.name
             image.style.width = '100px'
             list.appendChild(listItem);
             list.appendChild(image);
     });
+}
+
+function dataHelper(data){
+    const keys = data[0];
+
+    const arrayOfObjects = data.slice(1).map((row) => {
+        const obj = {};
+        keys.forEach((key, index) => {
+            obj[key] = row[index];
+        });
+        return obj;
+    });
+    return arrayOfObjects;
 }
