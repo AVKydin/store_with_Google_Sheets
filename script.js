@@ -67,12 +67,15 @@ function card(row){
     const titleCard = document.createElement('h5');
     const image = document.createElement('img');
     const p = document.createElement('p');
-    card.classList.add('col-lg-3', 'col-md-3', 'col-sm-3', 'text-center');
+    const button = document.createElement('button');
+    card.classList.add('col-lg-2', 'col-md-2', 'col-sm-3', 'text-center', 'card');
     titleCard.innerHTML = row.name;
     image.src = row.image;
     image.alt = row.name;
     image.style.width = '100px';
     p.innerHTML = row.cost + ' грн/' + row.kg;
-    card.append(titleCard, image, p)
+    button.classList.add('btn', 'btn-success');
+    button.innerHTML = "Купити"
+    card.append(titleCard, image, p, button)
     list.appendChild(card);
 }
