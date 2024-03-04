@@ -6,7 +6,7 @@ const apiKey = 'AIzaSyDtZJ2OspEUtqkCoQvZ5nIrm256zvMYs5I';
 
 const list = document.querySelector('.shop-field');
 const title = document.querySelector('h1');
-
+const cart = {};
 gapi.load('client', function() {
     initClient();
 });
@@ -75,7 +75,52 @@ function card(row){
     image.style.width = '100px';
     p.innerHTML = row.cost + ' грн/' + row.kg;
     button.classList.add('btn', 'btn-success');
-    button.innerHTML = "Купити"
+    button.innerHTML = "Купити";
+    button.setAttribute('data', row.id);
+    button.setAttribute('name', 'add-to-cart');
     card.append(titleCard, image, p, button)
     list.appendChild(card);
 }
+
+document.onclick = function (e){
+    if(e.target.attributes.name.nodeValue === 'add-to-cart'){
+        addToCart(e.target.attributes.data.nodeValue);
+    }
+}
+
+function addToCart(elem){
+    if(cart[elem] !==undefined){
+        cart[elem] ++
+    } else {
+        cart[elem] = 1;
+    }
+    console.log(cart);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
