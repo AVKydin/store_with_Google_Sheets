@@ -7,6 +7,7 @@ const apiKey = 'AIzaSyDtZJ2OspEUtqkCoQvZ5nIrm256zvMYs5I';
 const list = document.querySelector('.shop-field');
 const title = document.querySelector('h1');
 const cart = {};
+let restOfData;
 gapi.load('client', function() {
     initClient();
 });
@@ -41,7 +42,7 @@ function getDataFromSheet() {
 title.innerHTML = range;
 function displayData(data) {
     list.innerHTML = '';
-    const restOfData = dataHelper(data);
+    restOfData = dataHelper(data);
 
     restOfData.forEach((row) => {
         card(row);
@@ -62,7 +63,7 @@ function dataHelper(data){
 }
 
 function card(row){
-    console.log(row)
+    // console.log(row)
     const card = document.createElement('div');
     const titleCard = document.createElement('h5');
     const image = document.createElement('img');
@@ -94,9 +95,28 @@ function addToCart(elem){
     } else {
         cart[elem] = 1;
     }
-    console.log(cart);
+    showCart()
 }
 
+function showCart(){
+    let ul = document.querySelector('.cart')
+    ul.innerHTML = '';
+    let sum = 0;
+    for (const key in cart) {
+        console.log(cart)
+
+        let li = '<li>';
+        li += restOfData[key-1]['name'] + ' - ';
+        li += cart[key] + restOfData[key-1]['kg'] + ' на суму - ';
+        li += restOfData[key-1]['cost'] * cart[key] + ' грн.';
+        sum += restOfData[key-1]['cost'] * cart[key];
+
+        ul.innerHTML += li;
+    }
+
+    ul.innerHTML += 'Всього: ' + sum + ' грн.'
+
+}
 
 
 
