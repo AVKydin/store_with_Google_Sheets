@@ -97,6 +97,22 @@ function card(row){
 document.onclick = function (e){
     if(e.target.attributes.name.nodeValue === 'add-to-cart'){
         addToCart(e.target.attributes.data.nodeValue);
+    } else if(e.target.attributes.name.nodeValue === 'delete-goods'){
+        delete cart[e.target.attributes.data.nodeValue];
+        showCart();
+        localStorage.setItem('cart', JSON.stringify(cart));
+    } else if(e.target.attributes.name.nodeValue === 'plus-goods'){
+        cart[e.target.attributes.data.nodeValue]++;
+        showCart();
+        localStorage.setItem('cart', JSON.stringify(cart));
+    } else if(e.target.attributes.name.nodeValue === 'minus-goods'){
+        if(cart[e.target.attributes.data.nodeValue] - 1 ===0){
+            delete cart[e.target.attributes.data.nodeValue];
+        } else {
+            cart[e.target.attributes.data.nodeValue]--;
+        }
+        showCart();
+        localStorage.setItem('cart', JSON.stringify(cart));
     }
 }
 
@@ -120,17 +136,21 @@ function showCart(){
         li += restOfData[key-1]['name'] + ' - ';
         li += cart[key] + restOfData[key-1]['kg'] + ' на суму - ';
         li += restOfData[key-1]['cost'] * cart[key] + ' грн.';
+        li += ` <button name="plus-goods" data="${key}">+</button> `;
+        li += ` <button name="minus-goods" data="${key}">-</button> `;
+        li += ` <button name="delete-goods" data="${key}">X</button>`;
+        li += '</li>';
         sum += restOfData[key-1]['cost'] * cart[key];
 
         ol.innerHTML += li;
     }
+
     ol.innerHTML += 'Всього: ' + sum + ' грн.'
     const div = document.querySelector('.cartBlock');
     buttonCart.classList.add('btn', 'btn-success');
     buttonCart.innerHTML = "Сплатити";
     div.appendChild(buttonCart)
 }
-
 
 
 
