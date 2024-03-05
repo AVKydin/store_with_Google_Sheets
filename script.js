@@ -6,8 +6,18 @@ const apiKey = 'AIzaSyDtZJ2OspEUtqkCoQvZ5nIrm256zvMYs5I';
 
 const list = document.querySelector('.shop-field');
 const title = document.querySelector('h1');
-const cart = {};
+const buttonCart = document.createElement('button');
+let cart = {};
 let restOfData;
+
+function loadCartLocalStorage(){
+    if(localStorage.getItem('cart')){
+        cart = JSON.parse(localStorage.getItem('cart'));
+    }
+}
+
+loadCartLocalStorage();
+
 gapi.load('client', function() {
     initClient();
 });
@@ -33,6 +43,7 @@ function getDataFromSheet() {
         // console.log('Data from Google Sheet:', values);
 
         displayData(values);
+        showCart();
     }).catch((error) => {
         console.error('Error fetching data:', error.result.error.message);
     });
@@ -89,33 +100,35 @@ document.onclick = function (e){
     }
 }
 
+
 function addToCart(elem){
     if(cart[elem] !==undefined){
         cart[elem] ++
     } else {
         cart[elem] = 1;
     }
-    showCart()
+    showCart();
+    localStorage.setItem('cart', JSON.stringify(cart))
 }
 
 function showCart(){
-    let ul = document.querySelector('.cart')
-    ul.innerHTML = '';
+    let ol = document.querySelector('.cart')
+    ol.innerHTML = '';
     let sum = 0;
     for (const key in cart) {
-        console.log(cart)
-
         let li = '<li>';
         li += restOfData[key-1]['name'] + ' - ';
         li += cart[key] + restOfData[key-1]['kg'] + ' на суму - ';
         li += restOfData[key-1]['cost'] * cart[key] + ' грн.';
         sum += restOfData[key-1]['cost'] * cart[key];
 
-        ul.innerHTML += li;
+        ol.innerHTML += li;
     }
-
-    ul.innerHTML += 'Всього: ' + sum + ' грн.'
-
+    ol.innerHTML += 'Всього: ' + sum + ' грн.'
+    const div = document.querySelector('.cartBlock');
+    buttonCart.classList.add('btn', 'btn-success');
+    buttonCart.innerHTML = "Сплатити";
+    div.appendChild(buttonCart)
 }
 
 

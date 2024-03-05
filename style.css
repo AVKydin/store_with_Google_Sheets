@@ -10,6 +10,14 @@
     justify-content: center;
 }
 
+.cartBlock{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.cartBlock button{
+    height: 2.5rem;
+}
 
 .card{
     display: flex;
