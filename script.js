@@ -1,6 +1,15 @@
 
+window.onload = function() {
+    let preloader = document.getElementById('preloader');
+    // preloader.classList.add('hide-preloader');
+    setInterval(function() {
+        preloader.classList.add('preloader-hidden');
+    }, 1200);
+}
+
+
 const spreadsheetId = '1c6wl8ebc0RC42ItUyW6829hinHZxlKI1qMOfT2tMLXs';
-const range = 'Fruits';
+const range = 'Фрукти';
 const rangeTwo = 'Adidas Yeezy 700';
 const apiKey = 'AIzaSyDtZJ2OspEUtqkCoQvZ5nIrm256zvMYs5I';
 
@@ -95,6 +104,7 @@ function card(row){
 }
 
 document.onclick = function (e){
+    // console.log(e.target.innerHTML)
     if(e.target.attributes.name !== undefined) {
         if(e.target.attributes.name.nodeValue === 'add-to-cart'){
             addToCart(e.target.attributes.data.nodeValue);
@@ -114,6 +124,14 @@ document.onclick = function (e){
             }
             showCart();
             localStorage.setItem('cart', JSON.stringify(cart));
+        } else if(e.target.attributes.name.nodeValue === 'showCart'){
+            // console.log(e.target);
+            const cartBlock = document.querySelector('.cartBlock');
+            if(cartBlock.style.display === "flex"){
+                cartBlock.style.display = "none"
+            } else {
+                cartBlock.style.display = "flex"
+            }
         }
     }
     return false;
@@ -131,17 +149,20 @@ function addToCart(elem){
 }
 
 function showCart(){
-    let ol = document.querySelector('.cart')
+    let ol = document.querySelector('.cart');
+    ol.classList.add('list-group', 'list-group-flush', 'ol')
     ol.innerHTML = '';
     let sum = 0;
     for (const key in cart) {
-        let li = '<li>';
+        let li = '<li class="list-group-item li">';
         li += restOfData[key-1]['name'] + ' - ';
         li += cart[key] + restOfData[key-1]['kg'] + ' на суму - ';
         li += restOfData[key-1]['cost'] * cart[key] + ' грн.';
-        li += ` <button name="plus-goods" data="${key}">+</button> `;
-        li += ` <button name="minus-goods" data="${key}">-</button> `;
-        li += ` <button name="delete-goods" data="${key}">X</button>`;
+        li += '<div>';
+        li += ` <button class="btn btn-outline-success" name="plus-goods" data="${key}">+</button> `;
+        li += ` <button class="btn btn-outline-warning" name="minus-goods" data="${key}">-</button> `;
+        li += ` <button class="btn btn-outline-danger" name="delete-goods" data="${key}">X</button>`;
+        li += '</div>';
         li += '</li>';
         sum += restOfData[key-1]['cost'] * cart[key];
 
@@ -150,6 +171,11 @@ function showCart(){
 
     ol.innerHTML += 'Всього: ' + sum + ' грн.'
     const div = document.querySelector('.cartBlock');
+    if(Object.keys(cart).length === 0){
+        buttonCart.setAttribute('disabled', true);
+    } else {
+        buttonCart.removeAttribute('disabled');
+    }
     buttonCart.classList.add('btn', 'btn-success');
     buttonCart.innerHTML = "Сплатити";
     div.appendChild(buttonCart)

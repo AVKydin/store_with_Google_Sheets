@@ -11,12 +11,21 @@
 }
 
 .cartBlock{
-    display: flex;
+    display: none;
     justify-content: space-evenly;
 }
 
 .cartBlock button{
     height: 2.5rem;
+}
+
+.main{
+    display: flex;
+    justify-content: center;
+}
+
+h1{
+    margin-right: 100px;
 }
 
 .card{
@@ -26,4 +35,48 @@
     justify-content: space-between;
     margin: 10px;
     padding: 10px;
+}
+
+.none{
+    display: none;
+}
+
+.ol{
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.li{
+    display: flex;
+    justify-content: space-between;
+}
+
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+}
+
+#preloader.hide-preloader {
+    animation: hidePreloader 1s;
+}
+
+#preloader.preloader-hidden {
+    display: none;
+}
+
+@keyframes hidePreloader {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
