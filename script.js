@@ -1,16 +1,13 @@
+let preloader = document.getElementById('preloader');
 
-window.onload = function() {
-    let preloader = document.getElementById('preloader');
-    // preloader.classList.add('hide-preloader');
+function preloaderFu() {
     setInterval(function() {
         preloader.classList.add('preloader-hidden');
     }, 1200);
 }
-
-
+preloaderFu();
 const spreadsheetId = '1c6wl8ebc0RC42ItUyW6829hinHZxlKI1qMOfT2tMLXs';
-const range = 'Фрукти';
-const rangeTwo = 'Adidas Yeezy 700';
+let range = 'Фрукти';
 const apiKey = 'AIzaSyDtZJ2OspEUtqkCoQvZ5nIrm256zvMYs5I';
 
 const list = document.querySelector('.shop-field');
@@ -43,6 +40,7 @@ function initClient() {
     });
 }
 
+
 function getDataFromSheet() {
     gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId,
@@ -50,7 +48,6 @@ function getDataFromSheet() {
     }).then((response) => {
         const values = response.result.values;
         // console.log('Data from Google Sheet:', values);
-
         displayData(values);
         showCart();
     }).catch((error) => {
@@ -116,6 +113,12 @@ document.onclick = function (e){
             cart[e.target.attributes.data.nodeValue]++;
             showCart();
             localStorage.setItem('cart', JSON.stringify(cart));
+        } else if(e.target.attributes.name.nodeValue === 'fruits'){
+            range = "Фрукти";
+            initClient();
+        }  else if(e.target.attributes.name.nodeValue === 'vegetables'){
+            range = "Овочі";
+            initClient();
         } else if(e.target.attributes.name.nodeValue === 'minus-goods'){
             if(cart[e.target.attributes.data.nodeValue] - 1 ===0){
                 delete cart[e.target.attributes.data.nodeValue];
