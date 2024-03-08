@@ -168,7 +168,6 @@ function showCart(){
         li += '</div>';
         li += '</li>';
         sum += restOfData[key-1]['cost'] * cart[key];
-
         ol.innerHTML += li;
     }
 
