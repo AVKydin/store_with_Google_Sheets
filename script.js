@@ -69,14 +69,13 @@ function displayData(data) {
 function dataHelper(data){
     const keys = data[0];
 
-    const arrayOfObjects = data.slice(1).map((row) => {
+    return data.slice(1).map((row) => {
         const obj = {};
         keys.forEach((key, index) => {
             obj[key] = row[index];
         });
         return obj;
     });
-    return arrayOfObjects;
 }
 
 function card(row){
@@ -174,7 +173,7 @@ function showCart(){
     ol.innerHTML += 'Всього: ' + sum + ' грн.'
     const div = document.querySelector('.cartBlock');
     if(Object.keys(cart).length === 0){
-        buttonCart.setAttribute('disabled', true);
+        buttonCart.setAttribute('disabled', 'true');
     } else {
         buttonCart.removeAttribute('disabled');
     }
