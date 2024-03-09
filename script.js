@@ -42,18 +42,19 @@ function initClient() {
 }
 
 
-function getDataFromSheet() {
-    gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId,
-        range,
-    }).then((response) => {
+async function getDataFromSheet() {
+    try {
+        const response = await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId,
+            range,
+        });
         const values = response.result.values;
-        // console.log('Data from Google Sheet:', values);
         displayData(values);
         showCart();
-    }).catch((error) => {
-        console.error('Error fetching data:', error.result.error.message);
-    });
+    } catch (error) {
+        console.error('Помилка отримання даних:', error.result.error.message);
+        throw error;
+    }
 }
 
 
@@ -100,46 +101,95 @@ function card(row){
     list.appendChild(card);
 }
 
-document.onclick = function (e){
-    // console.log(e.target.innerHTML)
-    if(e.target.attributes.name !== undefined) {
-        if(e.target.attributes.name.nodeValue === 'add-to-cart'){
-            addToCart(e.target.attributes.data.nodeValue);
-        } else if(e.target.attributes.name.nodeValue === 'delete-goods'){
-            delete cart[e.target.attributes.data.nodeValue];
-            showCart();
-            localStorage.setItem('cart', JSON.stringify(cart));
-        } else if(e.target.attributes.name.nodeValue === 'plus-goods'){
-            cart[e.target.attributes.data.nodeValue]++;
-            showCart();
-            localStorage.setItem('cart', JSON.stringify(cart));
-        } else if(e.target.attributes.name.nodeValue === 'fruits'){
-            range = "Фрукти";
-            initClient();
-        }  else if(e.target.attributes.name.nodeValue === 'vegetables'){
-            range = "Овочі";
-            initClient();
-        } else if(e.target.attributes.name.nodeValue === 'minus-goods'){
-            if(cart[e.target.attributes.data.nodeValue] - 1 ===0){
+function showMessage(message, success = true) {
+    const messageBox = document.querySelector('.message-box');
+    messageBox.innerHTML = message;
+    messageBox.classList.toggle('success', success);
+    messageBox.style.display = 'block';
+
+    // Зникає після 3 секунд (можна змінити за потребою)
+    setTimeout(() => {
+        messageBox.style.display = 'none';
+    }, 3000);
+}
+async function performPayment() {
+    try {
+        // ... (код для обробки оплати)
+        showMessage('Оплата успішна', true);
+    } catch (error) {
+        showMessage('Помилка при обробці оплати', false);
+    }
+}
+
+document.onclick = async function (e) {
+    if (e.target.attributes.name !== undefined) {
+        preloader.classList.remove('preloader-hidden');
+        try {
+            if (e.target.attributes.name.nodeValue === 'add-to-cart') {
+                addToCart(e.target.attributes.data.nodeValue);
+                showMessage('Товар додано до кошика!');
+            } else if (e.target.attributes.name.nodeValue === 'delete-goods') {
                 delete cart[e.target.attributes.data.nodeValue];
-            } else {
-                cart[e.target.attributes.data.nodeValue]--;
+                showCart();
+                localStorage.setItem('cart', JSON.stringify(cart));
+                showMessage('Товар видалено з кошика!');
+            } else if (e.target.attributes.name.nodeValue === 'plus-goods') {
+                cart[e.target.attributes.data.nodeValue]++;
+                showCart();
+                localStorage.setItem('cart', JSON.stringify(cart));
+                showMessage('Кількість товару збільшено!');
+            } else if (e.target.attributes.name.nodeValue === 'fruits') {
+                range = "Фрукти";
+                await getDataFromSheet();
+                showMessage('Відображено фрукти!');
+            } else if (e.target.attributes.name.nodeValue === 'vegetables') {
+                range = "Овочі";
+                await getDataFromSheet();
+                showMessage('Відображено овочі!');
+            } else if (e.target.attributes.name.nodeValue === 'minus-goods') {
+                if (cart[e.target.attributes.data.nodeValue] - 1 === 0) {
+                    delete cart[e.target.attributes.data.nodeValue];
+                } else {
+                    cart[e.target.attributes.data.nodeValue]--;
+                }
+                showCart();
+                localStorage.setItem('cart', JSON.stringify(cart));
+                showMessage('Кількість товару зменшено!');
+            } else if (e.target.attributes.name.nodeValue === 'showCart') {
+                const cartBlock = document.querySelector('.cartBlock');
+                if (cartBlock.style.display === "flex") {
+                    cartBlock.style.display = "none";
+                } else {
+                    cartBlock.style.display = "flex";
+                }
+                showMessage('Відображено кошик!');
             }
-            showCart();
-            localStorage.setItem('cart', JSON.stringify(cart));
-        } else if(e.target.attributes.name.nodeValue === 'showCart'){
-            // console.log(e.target);
-            const cartBlock = document.querySelector('.cartBlock');
-            if(cartBlock.style.display === "flex"){
-                cartBlock.style.display = "none"
-            } else {
-                cartBlock.style.display = "flex"
-            }
+        } catch (error) {
+            console.error('Помилка обробки даних:', error);
+        } finally {
+            preloader.classList.add('preloader-hidden');
         }
     }
     return false;
 }
 
+buttonCart.onclick = async function () {
+    preloader.classList.remove('preloader-hidden');
+    try {
+        // Ваша логіка сплати або відправлення даних на сервер
+        await performPayment();
+        showMessage('Оплата успішно здійснена!');
+        // Очистити кошик та оновити відображення
+        cart = {};
+        showCart();
+        localStorage.removeItem('cart');
+    } catch (error) {
+        console.error('Помилка при сплаті:', error);
+        showMessage('Помилка при сплаті, спробуйте ще раз.');
+    } finally {
+        preloader.classList.add('preloader-hidden');
+    }
+};
 
 function addToCart(elem){
     if(cart[elem] !==undefined){
