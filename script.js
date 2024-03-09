@@ -2,14 +2,7 @@ let preloader = document.getElementById('preloader');
 let intervalLoader = setInterval(preloaderFu, 2000);
 
 function preloaderFu() {
-    // preloader.classList.remove('preloader-hidden');
     preloader.classList.add('preloader-hidden');
-}
-function preloaderFuRe() {
-    // preloader.classList.remove('preloader-hidden');
-    preloader.classList.remove('preloader-hidden');
-    clearInterval(intervalLoader);
-    intervalLoader = setInterval(preloaderFu, 2000);
 }
 
 const spreadsheetId = '1c6wl8ebc0RC42ItUyW6829hinHZxlKI1qMOfT2tMLXs';
@@ -41,6 +34,8 @@ function initClient() {
     }).then(() => {
         console.log('Google Sheets API initialized');
         getDataFromSheet();
+        preloader.classList.toggle('preloader-hidden');
+
     }, (error) => {
         console.error('Error initializing Google Sheets API:', error);
     });
@@ -56,7 +51,6 @@ function getDataFromSheet() {
         // console.log('Data from Google Sheet:', values);
         displayData(values);
         showCart();
-        clearInterval(intervalLoader);
     }).catch((error) => {
         console.error('Error fetching data:', error.result.error.message);
     });
@@ -122,11 +116,9 @@ document.onclick = function (e){
         } else if(e.target.attributes.name.nodeValue === 'fruits'){
             range = "Фрукти";
             initClient();
-            preloaderFuRe()
         }  else if(e.target.attributes.name.nodeValue === 'vegetables'){
             range = "Овочі";
             initClient();
-            preloaderFuRe()
         } else if(e.target.attributes.name.nodeValue === 'minus-goods'){
             if(cart[e.target.attributes.data.nodeValue] - 1 ===0){
                 delete cart[e.target.attributes.data.nodeValue];
