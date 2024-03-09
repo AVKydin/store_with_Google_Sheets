@@ -13,6 +13,7 @@
 .cartBlock{
     display: none;
     justify-content: space-evenly;
+    margin: 1rem;
 }
 
 .cartBlock button{
