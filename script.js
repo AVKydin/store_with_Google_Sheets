@@ -254,6 +254,48 @@ function scrollToTop() {
     document.documentElement.scrollTop = 0; // Chrome, Firefox, IE, Opera
 }
 
+function searchProducts() {
+    const searchInput = document.getElementById('searchInput');
+    const searchTerm = searchInput.value.toLowerCase();
+
+    // Filter products based on search term
+    const filteredProducts = restOfData.filter(product =>
+        product.name.toLowerCase().includes(searchTerm)
+    );
+
+    // Display filtered products
+    displayData(filteredProducts);
+}
+
+// Example: Filter products by category and price
+function filterProducts() {
+    const categoryFilter = document.getElementById('categoryFilter');
+    const priceFilter = document.getElementById('priceFilter');
+
+    const selectedCategory = categoryFilter.value;
+    const selectedPriceRange = priceFilter.value;
+
+    // Filter products based on category
+    let filteredProducts = restOfData;
+    if (selectedCategory !== 'all') {
+        filteredProducts = filteredProducts.filter(product =>
+            product.category === selectedCategory
+        );
+    }
+
+    // Filter products based on price range
+    if (selectedPriceRange !== 'all') {
+        const [minPrice, maxPrice] = selectedPriceRange.split('-').map(Number);
+        filteredProducts = filteredProducts.filter(product =>
+            product.price >= minPrice && product.price <= maxPrice
+        );
+    }
+
+    // Display filtered products
+    displayData(filteredProducts);
+    console.log(filteredProducts)
+    console.log(restOfData)
+}
 
 
 
