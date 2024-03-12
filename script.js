@@ -5,53 +5,6 @@ function preloaderFu() {
     preloader.classList.add('preloader-hidden');
 }
 
-
-function searchProducts() {
-    const searchInput = document.getElementById('searchInput');
-    const searchTerm = searchInput.value.toLowerCase();
-
-    // Filter products based on search term
-    const filteredProducts = restOfData.filter(product =>
-        product.name.toLowerCase().includes(searchTerm)
-    );
-
-    // Display filtered products
-    displayData(filteredProducts);
-}
-
-// Example: Filter products by category and price
-function searchAndFilter() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const selectedCategory = document.getElementById('categoryFilter').value;
-    const selectedPriceRange = document.getElementById('priceFilter').value;
-
-    // Фільтрувати за пошуковим терміном
-    let filteredProducts = restOfData.filter(product =>
-        product.name.toLowerCase().includes(searchTerm)
-    );
-
-    // Фільтрувати за категорією
-    if (selectedCategory !== 'all') {
-        filteredProducts = filteredProducts.filter(product =>
-            product.category === selectedCategory
-        );
-    }
-
-    // Фільтрувати за ціною
-    if (selectedPriceRange !== 'all') {
-        const [minPrice, maxPrice] = selectedPriceRange.split('-').map(Number);
-        filteredProducts = filteredProducts.filter(product =>
-            product.cost >= minPrice && product.cost <= maxPrice
-        );
-    }
-
-    // Відобразити відфільтровані товари
-    displayData(filteredProducts);
-}
-
-
-
-
 const spreadsheetId = '1c6wl8ebc0RC42ItUyW6829hinHZxlKI1qMOfT2tMLXs';
 let range = 'Фрукти';
 const apiKey = 'AIzaSyDtZJ2OspEUtqkCoQvZ5nIrm256zvMYs5I';
