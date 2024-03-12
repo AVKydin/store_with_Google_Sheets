@@ -130,19 +130,5 @@ h1{
     }
 }
 
-.search-bar {
-    margin-bottom: 20px;
-}
-
-.filter-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.filter-bar select {
-    margin-left: 10px;
-}
 
 
